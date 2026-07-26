@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhaswath Datla | Software Engineer</title>
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & THEMING (Light Default, Dark Optional)
+           ========================================================================== */
+        :root {
+            /* Light Theme (Crisp Black and White) */
+            --bg-base: #ffffff;
+            --bg-surface: #f9fafb;
+            --bg-surface-hover: #f3f4f6;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --accent-color: #000000;
+            --accent-glow: rgba(0, 0, 0, 0.08);
+            --border-color: #e5e7eb;
+            --dock-bg: rgba(255, 255, 255, 0.85);
+            --dock-border: rgba(0, 0, 0, 0.1);
+            --image-overlay: rgba(0, 0, 0, 0.03);
+            --skill-bg: #1f2937;
+            --skill-text: #f9fafb;
+            --progress-bar: #3b82f6; /* Blue scroll progress */
+            /* Subtle grid pattern for light mode */
+            --bg-pattern: radial-gradient(#e5e7eb 1px, transparent 1px);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme (True Black and Gray) */
+            --bg-base: #0a0a0a;
+            --bg-surface: #171717;
+            --bg-surface-hover: #262626;
+            --text-primary: #f9fafb;
+            --text-secondary: #a3a3a3;
+            --accent-color: #ffffff;
+            --accent-glow: rgba(255, 255, 255, 0.12);
+            --border-color: #262626;
+            --dock-bg: rgba(23, 23, 23, 0.85);
+            --dock-border: rgba(255, 255, 255, 0.1);
+            --image-overlay: rgba(0, 0, 0, 0.4);
+            --skill-bg: #262626;
+            --skill-text: #f9fafb;
+            --progress-bar: #60a5fa;
+            /* Subtle grid pattern for dark mode */
+            --bg-pattern: radial-gradient(#262626 1px, transparent 1px);
+        }
+
+        /* ==========================================================================
+           2. RESET, BASE STYLES & BACKGROUND
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            padding-bottom: 140px; /* Space for the dock */
+            position: relative;
+        }
+
+        /* Dynamic Dotted Grid Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: var(--bg-pattern);
+            background-size: 24px 24px;
+            opacity: 0.5;
+            z-index: -1;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 5px;
+            border: 2px solid var(--bg-base);
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+        /* ==========================================================================
+           3. SCROLL PROGRESS INDICATOR
+           ========================================================================== */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 9999;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--progress-bar);
+            width: 0%;
+            transition: width 0.1s ease-out;
+            box-shadow: 0 0 10px var(--progress-bar);
+        }
+
+        /* ==========================================================================
+           4. TYPOGRAPHY & HEADINGS
+           ========================================================================== */
+        .section-header {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 7rem 0 3rem 0;
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .section-header::after {
+            content: "";
+            height: 2px;
+            flex-grow: 1;
+            background: var(--border-color);
+            transition: background-color 0.4s ease;
+            border-radius: 2px;
+        }
+
+        /* ==========================================================================
+           5. HERO SECTION & WAVING HAND
+           ========================================================================== */
+        #home {
+            min-height: 95vh;
+            display: flex;
+            align-items: center;
+            padding-top: 2rem;
+        }
+
+        .hero-greeting {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1.2rem;
+            font-family: monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .hero-title {
+            font-size: clamp(3.5rem, 8vw, 6.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title .highlight {
+            color: var(--text-secondary);
+        }
+
+        .wave-icon {
+            display: inline-block;
+            animation: wave-animation 2.5s infinite;
+            transform-origin: 70% 70%;
+        }
+
+        @keyframes wave-animation {
+            0% { transform: rotate( 0.0deg) }
+            10% { transform: rotate(14.0deg) }
+            20% { transform: rotate(-8.0deg) }
+            30% { transform: rotate(14.0deg) }
+            40% { transform: rotate(-4.0deg) }
+            50% { transform: rotate(10.0deg) }
+            60% { transform: rotate( 0.0deg) }
+            100% { transform: rotate( 0.0deg) }
+        }
+
+        .hero-desc {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            line-height: 1.7;
+            margin-bottom: 3rem;
+        }
+
+        .hero-content-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+            width: 100%;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-image-container {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-avatar {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--border-color);
+            box-shadow: 0 20px 40px var(--accent-glow);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: var(--bg-surface);
+        }
+
+        .hero-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-avatar:hover {
+            transform: scale(1.03) rotate(2deg);
+            border-color: var(--text-secondary);
+            box-shadow: 0 30px 50px var(--accent-glow);
+        }
+
+        .hero-avatar:hover img {
+            transform: scale(1.05);
+        }
+
+        /* ==========================================================================
+           6. EXPERIENCE SECTION (With custom logos)
+           ========================================================================== */
+        .exp-card {
+            display: flex;
+            gap: 2rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle gradient hover effect */
+        .exp-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(120deg, transparent, var(--accent-glow), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+            pointer-events: none;
+        }
+
+        .exp-card:hover {
+            border-color: var(--text-secondary);
+            box-shadow: 0 15px 35px var(--accent-glow);
+            transform: translateY(-5px);
+        }
+
+        .exp-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .exp-logo-container {
+            flex-shrink: 0;
+            width: 85px;
+            height: 85px;
+            border-radius: 16px;
+            background: #ffffff; 
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .exp-logo-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .exp-details {
+            flex-grow: 1;
+        }
+
+        .exp-role {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .exp-company {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .exp-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            background: var(--bg-base);
+            border: 1px solid var(--border-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .exp-bullets {
+            list-style-type: none;
+        }
+
+        .exp-bullets li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            font-size: 1rem;
+        }
+
+        .exp-bullets li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+
+        /* ==========================================================================
+           7. PROJECTS SECTION
+           ========================================================================== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-card:hover {
+            border-color: var(--text-secondary);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px var(--accent-glow);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 240px;
+            position: relative;
+            background: #eaeaea;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-image::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--image-overlay);
+            pointer-events: none;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.08);
+        }
+
+        .project-content {
+            padding: 2.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .project-desc {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+            line-height: 1.6;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .project-tech span {
+            font-size: 0.8rem;
+            font-family: monospace;
+            background: var(--bg-base);
+            color: var(--text-secondary);
+            padding: 0.4rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .project-card:hover .project-tech span {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        /* ==========================================================================
+           8. EDUCATION SECTION (Matching screenshot)
+           ========================================================================== */
+        .edu-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .edu-container:hover {
+            border-color: var(--text-secondary);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .edu-left {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .uw-logo-circle {
+            width: 70px;
+            height: 70px;
+            background-color: #ffffff; /* Keep white for the provided logo */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            padding: 5px;
+        }
+
+        .uw-logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .edu-titles h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .edu-titles p {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+        }
+
+        .edu-titles p strong {
+            font-weight: 600;
+        }
+
+        .edu-date-right {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-family: monospace;
+        }
+        
+        .edu-coursework {
+            margin-left: 2rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 800px;
+            line-height: 1.7;
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--border-color);
+        }
+
+        /* ==========================================================================
+           9. SKILLS SECTION
+           ========================================================================== */
+        .skills-wrapper {
+            margin-top: 4rem;
+        }
+
+        .skills-section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 2rem 0 1rem 0;
+            color: var(--text-primary);
+        }
+
+        .skills-cluster {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .skill-tag {
+            background-color: var(--skill-bg);
+            color: var(--skill-text);
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .skill-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        [data-theme="light"] .skill-tag:hover {
+            background-color: #000000;
+        }
+
+        /* ==========================================================================
+           10. CONTACT SECTION
+           ========================================================================== */
+        .contact-section {
+            text-align: center;
+            padding: 6rem 0 4rem 0;
+            margin-top: 5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contact-badge {
+            background: var(--text-primary);
+            color: var(--bg-base);
+            padding: 0.4rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .contact-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.04em;
+        }
+
+        .contact-desc {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            line-height: 1.6;
+        }
+
+        .contact-desc a {
+            color: #0077b5; /* LinkedIn Blue */
+            font-weight: 600;
+            text-decoration: none;
+            transition: text-decoration 0.2s;
+        }
+
+        .contact-desc a:hover {
+            text-decoration: underline;
+        }
+
+        .mailto-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .mailto-btn:hover {
+            border-color: var(--text-primary);
+            background: var(--text-primary);
+            color: var(--bg-base);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           11. FLOATING BOTTOM DOCK & TOOLTIPS
+           ========================================================================== */
+        .dock-container {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--dock-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--dock-border);
+            border-radius: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .dock-divider {
+            width: 1px;
+            height: 32px;
+            background-color: var(--border-color);
+            margin: 0 0.5rem;
+        }
+
+        .dock-item {
+            position: relative;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            outline: none;
+        }
+
+        .dock-item svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: all 0.25s ease;
+        }
+
+        .dock-item.social-icon svg { fill: currentColor; stroke: none; }
+        
+        /* Active State (Scrollspy highlights the active section) */
+        .dock-item.active {
+            background: var(--bg-surface-hover);
+            color: var(--text-primary);
+        }
+
+        .dock-item:hover {
+            background: var(--bg-surface-hover);
+            color: var(--text-primary);
+            transform: translateY(-6px) scale(1.15);
+            z-index: 10;
+        }
+
+        /* Animated Tooltip */
+        .dock-tooltip {
+            position: absolute;
+            top: -55px;
+            background: var(--text-primary);
+            color: var(--bg-base);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px) scale(0.9);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            white-space: nowrap;
+            pointer-events: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .dock-tooltip::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 8px;
+            height: 8px;
+            background: var(--text-primary);
+        }
+
+        .dock-item:hover .dock-tooltip { 
+            opacity: 1; 
+            visibility: visible; 
+            transform: translateY(0) scale(1); 
+        }
+
+        /* ==========================================================================
+           12. SCROLL REVEAL ANIMATIONS
+           ========================================================================== */
+        .animate-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .animate-up.visible { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* ==========================================================================
+           13. RESPONSIVE DESIGN (Media Queries)
+           ========================================================================== */
+        @media (max-width: 900px) {
+            .hero-title { font-size: 4.5rem; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .hero-content-wrapper { gap: 2rem; }
+            .hero-avatar { width: 220px; height: 220px; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3.5rem; }
+            .hero-content-wrapper { flex-direction: column-reverse; text-align: center; gap: 2.5rem; }
+            .hero-desc { margin: 0 auto 3rem auto; }
+            .hero-avatar { width: 200px; height: 200px; }
+            .exp-card { flex-direction: column; gap: 1.5rem; padding: 1.5rem; }
+            .edu-container { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+            .edu-date-right { font-size: 0.9rem; }
+            .edu-coursework { margin-left: 0; padding-left: 1rem; }
+            .contact-title { font-size: 3rem; }
+            .dock-container { padding: 0.5rem; gap: 0.25rem; bottom: 20px; }
+            .dock-item { width: 42px; height: 42px; }
+            .dock-item svg { width: 18px; height: 18px; }
+            .dock-tooltip { display: none; /* Hide tooltips on mobile */ }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP PROGRESS BAR -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="container">
+        
+        <!-- ==================== HOME SECTION ==================== -->
+        <section id="home" class="scroll-section">
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <span class="hero-greeting animate-up">Hello, World.</span>
+                    <h1 class="hero-title animate-up delay-1">
+                        Hey, <span class="wave-icon">👋</span><br>
+                        <span class="highlight">I'm Bhaswath.</span>
+                    </h1>
+                    <p class="hero-desc animate-up delay-2">
+                        I'm a software engineer and computer science student at the University of Washington. I specialize in building intelligent systems, robust network architecture, and highly scalable web applications.
+                    </p>
+                    <div class="animate-up delay-3">
+                        <!-- Nice smooth scroll anchor button -->
+                        <a href="#experience" style="display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600; color: var(--text-secondary); transition: color 0.2s;">
+                            Explore my work
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image-container animate-up delay-1">
+                    <div class="hero-avatar">
+                        <img src="me.png" alt="Bhaswath Datla">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== EXPERIENCE SECTION ==================== -->
+        <section id="experience" class="scroll-section">
+            <h2 class="section-header animate-up">Experience</h2>
+            
+            <!-- 1. UW SEAL -->
+            <div class="exp-card animate-up">
+                <div class="exp-logo-container">
+                    <img src="seal.jpg" alt="UW SEAL Logo">
+                </div>
+                <div class="exp-details">
+                    <h3 class="exp-role">Lab Associate - Gas Leak Detection</h3>
+                    <div class="exp-company">UW Sensors, Energy, and Automation Laboratory (UW SEAL)</div>
+                    <div class="exp-date">March 2026 - Present</div>
+                    <ul class="exp-bullets">
+                        <li>Built FFT-based signal-processing pipelines in Python and MATLAB to extract vibration/acoustic features from sensor data, enabling reliable leak-signature detection for a DOE-funded compressed-gas leak localization project.</li>
+                        <li>Developed machine learning classification models to identify leak signatures from processed sensor data.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. Husky Coding Project -->
+            <div class="exp-card animate-up delay-1">
+                <div class="exp-logo-container">
+                    <img src="hcp_uw_logo.jpg" alt="Husky Coding Project Logo">
+                </div>
+                <div class="exp-details">
+                    <h3 class="exp-role">Junior Programmer</h3>
+                    <div class="exp-company">Husky Coding Project (ASL App)</div>
+                    <div class="exp-date">January 2025 - January 2026</div>
+                    <ul class="exp-bullets">
+                        <li>Developed real-time ASL gesture recognition features using TensorFlow, reducing prediction latency by 20% to enable seamless feedback for 50+ active users.</li>
+                        <li>Resolved 15+ critical software defects and conducted weekly code reviews using AI-assisted development, accelerating debugging cycles and improving application stability.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3. Wave Hopes and Smiles (Restored) -->
+            <div class="exp-card animate-up delay-2">
+                <div class="exp-logo-container">
+                    <img src="wave_seattle_logo.jpg" alt="Wave Hopes and Smiles Logo">
+                </div>
+                <div class="exp-details">
+                    <h3 class="exp-role">Founding Member & Head of Dev</h3>
+                    <div class="exp-company">Wave Hopes and Smiles (Nonprofit)</div>
+                    <div class="exp-date">Sept 2023 - June 2025</div>
+                    <ul class="exp-bullets">
+                        <li>Helped launch and scale a community-focused nonprofit organization, coordinating 3 major fundraising events that raised $10,000+ fully donated to Seattle Children's Hospital.</li>
+                        <li>Directed a team of 15+ volunteers while balancing rigorous academic responsibilities, demonstrating strong collaboration and communication skills.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PROJECTS SECTION ==================== -->
+        <section id="projects" class="scroll-section">
+            <h2 class="section-header animate-up">Projects</h2>
+            
+            <div class="projects-grid">
+                
+                <!-- Project 1 -->
+                <div class="project-card animate-up">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80" alt="Code on Screen">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Network Latency Engine</h3>
+                        <p class="project-desc">Engineered a multithreaded background service in Java using Socket programming to monitor network stability, buffering 10,000+ daily telemetry points while eliminating I/O bottlenecks.</p>
+                        <div class="project-tech">
+                            <span>Java</span>
+                            <span>java.net.Socket</span>
+                            <span>Multithreading</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card animate-up delay-1">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80" alt="AI Abstract">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Red Bull AI Impactathon</h3>
+                        <p class="project-desc">Won 3rd Place out of 50+ university teams. Architected the application's core logic and prompt engineering framework, optimizing LLM reasoning and output quality under tight constraints.</p>
+                        <div class="project-tech">
+                            <span>Prompt Engineering</span>
+                            <span>LLM Workflows</span>
+                            <span>Agile</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 (Added to balance the grid and show more breadth) -->
+                <div class="project-card animate-up delay-2">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Data Analytics Dashboard">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Data Observability Dashboard</h3>
+                        <p class="project-desc">A full-stack web application for tracking and visualizing complex telemetry datasets in real-time, featuring interactive charts, secure authentication, and a responsive custom UI.</p>
+                        <div class="project-tech">
+                            <span>React</span>
+                            <span>TypeScript</span>
+                            <span>PostgreSQL</span>
+                            <span>Tailwind</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== EDUCATION & SKILLS SECTION ==================== -->
+        <section id="education" class="scroll-section">
+            <h2 class="section-header animate-up">Education</h2>
+            
+            <div class="edu-container animate-up">
+                <div class="edu-left">
+                    <div class="uw-logo-circle">
+                        <!-- Using the provided UW image -->
+                        <img src="1780547092074.jpg" alt="UW Logo">
+                    </div>
+                    <div class="edu-titles">
+                        <h3>University of Washington</h3>
+                        <p><strong>B.S. Computer Science</strong></p>
+                    </div>
+                </div>
+                <div class="edu-date-right">
+                    Expected June 2028
+                </div>
+            </div>
+            
+            <p class="edu-coursework animate-up delay-1">
+                <strong>Honors:</strong> Dean's List (GPA: 3.52) <br>
+                <strong>Relevant Coursework:</strong> Data Structures & Algorithms, Object-Oriented Programming (OOP), Discrete Mathematics, Artificial Intelligence, Database Systems (SQL/Relational Databases).
+            </p>
+
+            <div class="skills-wrapper">
+                <h2 class="skills-section-title animate-up">Languages & Core Tech</h2>
+                <div class="skills-cluster animate-up">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Java</span>
+                    <span class="skill-tag">C</span>
+                    <span class="skill-tag">C++</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">TypeScript</span>
+                    <span class="skill-tag">SQL</span>
+                    <span class="skill-tag">HTML/CSS</span>
+                </div>
+
+                <h2 class="skills-section-title animate-up">Frameworks & Tools</h2>
+                <div class="skills-cluster animate-up">
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">Next.js</span>
+                    <span class="skill-tag">Vite</span>
+                    <span class="skill-tag">Tailwind CSS</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">Docker</span>
+                    <span class="skill-tag">Linux</span>
+                    <span class="skill-tag">Vercel</span>
+                    <span class="skill-tag">Firebase</span>
+                    <span class="skill-tag">PostgreSQL</span>
+                    <span class="skill-tag">SQLite</span>
+                </div>
+
+                <h2 class="skills-section-title animate-up">AI & Machine Learning</h2>
+                <div class="skills-cluster animate-up">
+                    <span class="skill-tag">TensorFlow</span>
+                    <span class="skill-tag">PyTorch</span>
+                    <span class="skill-tag">scikit-learn</span>
+                    <span class="skill-tag">LLM Workflows</span>
+                    <span class="skill-tag">Prompt Engineering</span>
+                    <span class="skill-tag">Agentforce</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CONTACT SECTION ==================== -->
+        <section id="contact" class="contact-section scroll-section animate-up">
+            <span class="contact-badge">Contact</span>
+            <h2 class="contact-title">Get in Touch</h2>
+            <p class="contact-desc">
+                I'm currently open to new software engineering opportunities. Connect and message me on <a href="https://www.linkedin.com/in/bhaswath-datla/" target="_blank">LinkedIn</a> or drop me an email if you'd like to chat!
+            </p>
+            <a href="mailto:bhaswathdatla@gmail.com" class="mailto-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                Send Email
+            </a>
+        </section>
+    </div>
+
+    <!-- ==================== BOTTOM FLOATING DOCK ==================== -->
+    <nav class="dock-container">
+        
+        <!-- Navigation Links -->
+        <a href="#home" class="dock-item nav-dot" data-target="home">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span class="dock-tooltip">Home</span>
+        </a>
+        <a href="#experience" class="dock-item nav-dot" data-target="experience">
+            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            <span class="dock-tooltip">Experience</span>
+        </a>
+        <a href="#projects" class="dock-item nav-dot" data-target="projects">
+            <svg viewBox="0 0 24 24"><path d="M15 14l-6.5 6.5a1.5 1.5 0 0 1-2.12-2.12L12.88 11.88"></path><path d="M14.5 9.5L16 11l4.5-4.5a2.12 2.12 0 0 0-3-3l-3 3v2.5z"></path><path d="M13 10l-1-1"></path><path d="M16 13l-1-1"></path></svg>
+            <span class="dock-tooltip">Projects</span>
+        </a>
+        
+        <!-- Book Icon for Education added to dock -->
+        <a href="#education" class="dock-item nav-dot" data-target="education">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span class="dock-tooltip">Education</span>
+        </a>
+        
+        <div class="dock-divider"></div>
+
+        <!-- Links (Resume, GitHub, LinkedIn) -->
+        <a href="resume.pdf" target="_blank" class="dock-item">
+            <svg viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span class="dock-tooltip">Resume</span>
+        </a>
+        <a href="https://github.com/Bhasu333" target="_blank" class="dock-item social-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            <span class="dock-tooltip">GitHub</span>
+        </a>
+        <a href="https://www.linkedin.com/in/bhaswath-datla/" target="_blank" class="dock-item social-icon">
+            <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <span class="dock-tooltip">LinkedIn</span>
+        </a>
+
+        <div class="dock-divider"></div>
+
+        <!-- Theme Toggle -->
+        <button id="themeToggle" class="dock-item">
+            <svg id="themeIcon" viewBox="0 0 24 24"></svg>
+            <span class="dock-tooltip">Toggle Theme</span>
+        </button>
+    </nav>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. Scroll Progress Bar ---
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById("progressBar").style.width = scrolled + "%";
+            });
+
+            // --- 2. Scrollspy (Highlights active section in dock) ---
+            const sections = document.querySelectorAll('.scroll-section');
+            const navItems = document.querySelectorAll('.nav-dot');
+
+            const scrollSpyObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        // Remove active class from all nav items
+                        navItems.forEach(item => item.classList.remove('active'));
+                        // Add active class to corresponding nav item
+                        const activeNav = document.querySelector(`.nav-dot[data-target="${id}"]`);
+                        if (activeNav) activeNav.classList.add('active');
+                    }
+                });
+            }, {
+                rootMargin: '-20% 0px -70% 0px' // Adjust trigger point to middle of screen
+            });
+
+            sections.forEach(sec => scrollSpyObserver.observe(sec));
+
+            // --- 3. Scroll Reveal Animations (Fade in on scroll) ---
+            const revealOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Optional: Stop observing once revealed
+                        // revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, revealOptions);
+
+            document.querySelectorAll('.animate-up').forEach((el) => {
+                revealObserver.observe(el);
+            });
+
+            // --- 4. Theme Toggle Logic ---
+            const themeToggleBtn = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const htmlElement = document.documentElement;
+            
+            // SVG Icons for Moon (Dark) and Sun (Light)
+            const moonSVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+            const sunSVG = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+
+            // Load saved theme or default to light
+            const savedTheme = localStorage.getItem('portfolio-theme') || 'light';
+            setTheme(savedTheme);
+
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = htmlElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+            });
+
+            function setTheme(theme) {
+                htmlElement.setAttribute('data-theme', theme);
+                localStorage.setItem('portfolio-theme', theme);
+                
+                // If it's light mode, show the moon (to click for dark mode)
+                if (theme === 'light') {
+                    themeIcon.innerHTML = moonSVG;
+                } else {
+                    themeIcon.innerHTML = sunSVG;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
