@@ -637,25 +637,84 @@
             text-decoration: underline;
         }
 
-        .mailto-btn {
+        .contact-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            text-align: left;
+        }
+
+        .form-group {
+            width: 100%;
+        }
+
+        .form-input {
+            width: 100%;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.85rem 1.25rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        .form-input:focus {
+            border-color: var(--text-primary);
+            background-color: var(--bg-surface-hover);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.75rem;
-            background: var(--bg-surface);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
+            background: var(--text-primary);
+            color: var(--bg-base);
+            border: 1px solid var(--text-primary);
             padding: 1rem 2rem;
             border-radius: 12px;
             font-size: 1.1rem;
             font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
+            width: 100%;
         }
 
-        .mailto-btn:hover {
-            border-color: var(--text-primary);
-            background: var(--text-primary);
-            color: var(--bg-base);
+        .submit-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 10px 20px var(--accent-glow);
+            opacity: 0.9;
+        }
+
+        .form-status {
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .form-status.success {
+            color: #10b981;
+        }
+
+        .form-status.error {
+            color: #ef4444;
         }
 
         /* ==========================================================================
@@ -1022,12 +1081,27 @@
             <span class="contact-badge">Contact</span>
             <h2 class="contact-title">Get in Touch</h2>
             <p class="contact-desc">
-                I'm currently open to new software engineering opportunities. Connect and message me on <a href="https://www.linkedin.com/in/bhaswath-datla/" target="_blank">LinkedIn</a> or drop me an email if you'd like to chat!
+                I'm currently open to new software engineering opportunities. Connect and message me on <a href="https://www.linkedin.com/in/bhaswath-datla/" target="_blank">LinkedIn</a> or send a message directly below!
             </p>
-            <a href="mailto:bhaswathdatla@gmail.com" class="mailto-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                Send Email
-            </a>
+            <form id="contactForm" class="contact-form">
+                <input type="hidden" name="access_key" value="7f1b4ff3-09bc-49e9-bdd8-f4a5458d2013">
+                
+                <div class="form-group">
+                    <input type="text" name="name" required placeholder="Your Name" class="form-input">
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" required placeholder="Your Email" class="form-input">
+                </div>
+                <div class="form-group">
+                    <textarea name="message" required placeholder="Your Message" rows="5" class="form-input form-textarea"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    Send Message
+                </button>
+                <div id="formStatus" class="form-status"></div>
+            </form>
         </section>
     </div>
 
@@ -1168,6 +1242,40 @@
                 } else {
                     themeIcon.innerHTML = sunSVG;
                 }
+            }
+
+            const contactForm = document.getElementById('contactForm');
+            const formStatus = document.getElementById('formStatus');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    formStatus.textContent = "Sending...";
+                    formStatus.className = "form-status";
+                    
+                    const formData = new FormData(contactForm);
+                    
+                    fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(async (response) => {
+                        const json = await response.json();
+                        if (response.status === 200) {
+                            formStatus.textContent = "Message sent successfully!";
+                            formStatus.className = "form-status success";
+                            contactForm.reset();
+                        } else {
+                            formStatus.textContent = json.message || "Something went wrong.";
+                            formStatus.className = "form-status error";
+                        }
+                    })
+                    .catch(() => {
+                        formStatus.textContent = "Unable to connect. Please try again later.";
+                        formStatus.className = "form-status error";
+                    });
+                });
             }
         });
     </script>
