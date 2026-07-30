@@ -1132,7 +1132,8 @@
         </section>
 
         <footer class="footer">
-            <p>© 2026 Bhaswath Datla. Crafted with HTML, CSS & Vanilla JS. Hosted on Vercel.<span id="easter-egg-text" style="font-style: italic; margin-left: 0.5rem; transition: opacity 0.4s ease-in-out; opacity: 0.6;">(My Spidey-Sense is tingling... 🕷️)</span></p>
+            <p style="margin-bottom: 0.5rem;">© 2026 Bhaswath Datla. Crafted with HTML, CSS & Vanilla JS. Hosted on Vercel.</p>
+            <p>Look closely at your browser tab... <span id="easter-egg-text" style="font-style: italic; transition: opacity 0.4s ease-in-out; opacity: 1;">(My Spidey-Sense is tingling... 🕷️)</span></p>
         </footer>
     </div>
 
@@ -1212,7 +1213,7 @@
                         faviconLink.href = favicons[faviconIndex];
                         if (easterEggElement) {
                             easterEggElement.innerText = easterEggMessages[faviconIndex];
-                            easterEggElement.style.opacity = 0.6;
+                            easterEggElement.style.opacity = 1;
                         }
                     }, 400);
                 }, 3000);
