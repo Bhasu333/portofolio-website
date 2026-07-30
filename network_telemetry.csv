@@ -1,0 +1,6 @@
+timestamp,server,latency_ms,packet_loss_pct,reachable
+1785133266362,127.0.0.1,-1,100.00,false
+1785133266444,unreachable.test.invalid,-1,100.00,false
+1785133266442,1.1.1.1,32,0.00,true
+1785133266469,google.com,54,0.00,true
+1785133272362,8.8.8.8,-1,100.00,false
