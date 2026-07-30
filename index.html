@@ -871,6 +871,10 @@
             font-size: 0.9rem;
             opacity: 0.7;
         }
+
+        .no-transitions * {
+            transition: none !important;
+        }
     </style>
 </head>
 <body>
@@ -1289,6 +1293,7 @@
             });
 
             function setTheme(theme) {
+                document.documentElement.classList.add('no-transitions');
                 htmlElement.setAttribute('data-theme', theme);
                 localStorage.setItem('portfolio-theme', theme);
                 
@@ -1298,6 +1303,12 @@
                 } else {
                     themeIcon.innerHTML = sunSVG;
                 }
+                
+                window.getComputedStyle(document.documentElement).opacity;
+                
+                setTimeout(() => {
+                    document.documentElement.classList.remove('no-transitions');
+                }, 50);
             }
 
             const contactForm = document.getElementById('contactForm');
