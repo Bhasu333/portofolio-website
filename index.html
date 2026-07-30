@@ -1132,7 +1132,7 @@
         </section>
 
         <footer class="footer">
-            <p>© 2026 Bhaswath Datla. Crafted with HTML, CSS & Vanilla JS. Hosted on Vercel.</p>
+            <p>© 2026 Bhaswath Datla. Crafted with HTML, CSS & Vanilla JS. Hosted on Vercel.<span id="easter-egg-text" style="font-style: italic; margin-left: 0.5rem; transition: opacity 0.4s ease-in-out; opacity: 0.6;">(My Spidey-Sense is tingling... 🕷️)</span></p>
         </footer>
     </div>
 
@@ -1194,12 +1194,27 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const favicons = ['favicon.png', 'ironman_favicon.png', 'blackpanther_favicon.png'];
+            const easterEggMessages = [
+                '(My Spidey-Sense is tingling... 🕷️)',
+                '(I am Iron Man. 🤖)',
+                '(Wakanda Forever! 🙅🏾‍♂️)'
+            ];
             let faviconIndex = 0;
             const faviconLink = document.querySelector('link[rel="icon"]');
+            const easterEggElement = document.getElementById('easter-egg-text');
             if (faviconLink) {
                 setInterval(() => {
-                    faviconIndex = (faviconIndex + 1) % favicons.length;
-                    faviconLink.href = favicons[faviconIndex];
+                    if (easterEggElement) {
+                        easterEggElement.style.opacity = 0;
+                    }
+                    setTimeout(() => {
+                        faviconIndex = (faviconIndex + 1) % favicons.length;
+                        faviconLink.href = favicons[faviconIndex];
+                        if (easterEggElement) {
+                            easterEggElement.innerText = easterEggMessages[faviconIndex];
+                            easterEggElement.style.opacity = 0.6;
+                        }
+                    }, 400);
                 }, 3000);
             }
             
