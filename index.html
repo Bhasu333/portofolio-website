@@ -1193,6 +1193,15 @@
     <!-- ==================== JAVASCRIPT LOGIC ==================== -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const favicons = ['favicon.png', 'penguin_favicon.png'];
+            let faviconIndex = 0;
+            const faviconLink = document.querySelector('link[rel="icon"]');
+            if (faviconLink) {
+                setInterval(() => {
+                    faviconIndex = (faviconIndex + 1) % favicons.length;
+                    faviconLink.href = favicons[faviconIndex];
+                }, 3000);
+            }
             
             // --- 1. Scroll Progress Bar ---
             window.addEventListener('scroll', () => {
